@@ -276,7 +276,49 @@ class Controller_index {
     }
 
 // thanh chi here 
+    function searchreport() {
+        if (isset($_SESSION['login_id'])) {
+            if (isset($_POST['submit'])) {
+                $a = strtotime($_POST['start']);
+                $b = strtotime($_POST['end']);
+                $c = time();
+                if($a> $b)
+                {
+                     $errreport = "<div class='alert alert-danger'> <strong>Danger!</strong> Time End Must Be More Than Time Start</div>";
+                     $_SESSION['errreport'] = $errreport;
+                     header('location:' . BASE_URL . "index/report");
+                     
+                }
+                elseif($a>$c)
+                {
+                     $errreport = "<div class='alert alert-danger'> <strong>Danger!</strong> Time Start Must Be In Past</div>";
+                     $_SESSION['errreport'] = $errreport;
+                     header('location:' . BASE_URL . "index/report");
+                     
+                }
+                else
+                {
+                $tag = $_POST['tag'];
+                $dstart = $_POST['start'];
+                $dend = $_POST['end'];
+                $iduser = $_SESSION['login_id'];
+                unset($_SESSION['errreport']);
+                $search = $this->time->search($tag, $dstart, $dend, $iduser);
+                $_SESSION['search'] = $search;
+                header('location:' . BASE_URL . "index/report");
+                }
+            }
+        }
+        header('location:' . BASE_URL . "index/report");
+    }
 
+    function export() {
+        if (isset($_SESSION['login_id'])) {
+            $iduser = $_SESSION['login_id'];
+            $managetime = $this->time->managetime($iduser);
+            require_once 'View/layout-default/trangchu.phtml';
+        }
+    }
 
     
 
