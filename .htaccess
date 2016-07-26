@@ -1,0 +1,5 @@
+RewriteEngine On
+RewriteRule Public - [L]
+RewriteRule xlsx - [L]
+RewriteRule (.*) index.php [L]
+AddDefaultCharset UTF-8
